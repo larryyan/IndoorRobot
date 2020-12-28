@@ -21,8 +21,14 @@ def SearchBook(SearchMode, KeyWord):
     return BookNumber, BookItems
 
 
-if __name__ == '__main__':
-    (SearchBookNumber, SearchBookInfo) = SearchBook('TITLE', '刑法')
-    print(SearchBookNumber)
+def SearchTitleNumber(SearchMode, KeyWord):
+    (SearchBookNumber, SearchBookInfo) = SearchBook(SearchMode, KeyWord)
+    BookList = []
     for item in SearchBookInfo:
+        BookList.append({'Title': item['fields']['BTitle'], 'Number': item['fields']['BCallNo']})
+    return BookList
+
+if __name__ == '__main__':
+    BookListReturn = SearchTitleNumber('TITLE', '刑法')
+    for item in BookListReturn:
         print(item)
