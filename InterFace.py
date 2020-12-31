@@ -60,7 +60,8 @@ def Search():
     global LinkAddress
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
-    SearchResultSorted ,SearchResultNo= BookSearch_api.SearchBook(SearchMode,KeyWord)
+    BookSearch_api.SearchBook(SearchMode,KeyWord)
+    SearchResultSorted ,SearchResultNo= BookNumber, BookItems
 
 
 
