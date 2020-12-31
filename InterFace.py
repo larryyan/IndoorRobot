@@ -60,8 +60,8 @@ def Search():
     global LinkAddress
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
-    BookSearch_api.SearchBook(SearchMode,KeyWord)
-    SearchResultSorted ,SearchResultNo= BookNumber, BookItems
+    # 改为SearchTitleNumber，返回值信息见api程序注释
+    SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
 
 
 
@@ -126,7 +126,7 @@ sb.pack(side=tk.LEFT,fill=tk.Y)
 
 
 
-lb=tk.Listbox(window,listvariable=SearchResultSorted,
+lb=tk.Listbox(window,listvariable=SearchResultSorted['Title'],
               width=40, relief=tk.GROOVE,yscrollcommand=sb.set)
 lb.pack(side=tk.LEFT,
               expand=tk.YES,
