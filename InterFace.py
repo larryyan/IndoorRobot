@@ -1,7 +1,7 @@
 import tkinter as tk
 #from tkinter import *
 import requests
-#import api
+import BookSearch_api
 import webbrowser
 
 #version information
@@ -23,6 +23,7 @@ LinkAddress = None
 KeyWord = None
 SearchMode = None
 SearchResult = None
+SearchResultNo = None
 
 MapLink = None
 CallNo = None
@@ -36,6 +37,8 @@ MapLink = f'http://192.168.100.133:8080/cgi-bin/BookLocation.exe?barcode={CallNo
 CallNo_Sample：Z0192036
 '''
 
+
+'''
 def Search():
     global SearchMode
     global KeyWord
@@ -45,6 +48,16 @@ def Search():
     LinkAddress = f'http://{ServerIP}:{Port}/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
     SearchResult = requests.get(LinkAddress).json()
     print(SearchResult)
+'''
+
+
+def Search():
+    global SerachMode
+    global KeyWord
+    global LinkAddress
+    SearchMode = 'TITLE'
+    KeyWord = InputBox.get()
+    SearchResultSorted ,SearchResultNo= BookSearch_api.SearchBook(SearchMode,KeyWord)
 
 
 
