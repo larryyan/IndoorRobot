@@ -39,6 +39,7 @@ CallNo_Sample：Z0192036
 
 
 '''
+#the older version of the independent Search function
 def Search():
     global SearchMode
     global KeyWord
@@ -51,6 +52,8 @@ def Search():
 '''
 
 
+
+#This Function is still testing
 def Search():
     global SerachMode
     global KeyWord
