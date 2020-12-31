@@ -60,7 +60,15 @@ def Search():
     global LinkAddress
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
-    SearchResultSorted ,SearchResultNo= BookSearch_api.SearchBook(SearchMode,KeyWord)
+
+
+    # 改为SearchTitleNumber，返回值信息见api程序注释
+
+    SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
+
+    # 没搞明白tkinter语法，所以你还是再改改吧，大概就是这样
+
+    return SearchResultSorted
 
 
 
