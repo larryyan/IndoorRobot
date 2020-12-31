@@ -6,8 +6,8 @@ import webbrowser
 
 #version information
 TitleName = 'TestDemo'
-Version = '0.1.0'
-
+Version = '0.1.2'
+#谢邀，本人代码是逆练出来的，请谅解
 
 #define Window
 window = tk.Tk()
@@ -29,6 +29,7 @@ MapLink = None
 CallNo = None
 SearchResultSorted = None
 SelectedBooks = None
+
 
 
 '''
@@ -60,7 +61,6 @@ def Search():
     global LinkAddress
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
-    # 改为SearchTitleNumber，返回值信息见api程序注释
     SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
 
 
@@ -88,15 +88,15 @@ def BookAdd():
     value=lb.get(lb.curselection())
     lb2.insert('end',str(value))
     #SelectedBooks=list(set(SelectedBooks))
-    
+    SelectedBooks=lb2.get(0,tk.END)
+    print(SelectedBooks)
 
 
 def BookRemove():
-    
-    #value=lb2.get(lb.curselection())
-    #缺少删除指定内容的函数
-    lb2.delete(0,tk.END)
-
+    Position = lb2.curselection()
+    lb2.delete(Position)
+    SelectedBooks=lb2.get(0,tk.END)
+    print(SelectedBooks)
 
 BookAddButton=tk.Button(window,text='Add Select To BookList',
                         font=('Arial',20),bg='azure',command=BookAdd)
@@ -113,7 +113,6 @@ BookdeclineButton=tk.Button(window,text='Remove from BookList',
 BookdeclineButton.pack(side=tk.TOP,
                    expand=tk.YES,
                    ipadx=20,ipady=5,
-
                    anchor=tk.E)
 
 
@@ -123,10 +122,11 @@ sb2.pack(side=tk.RIGHT,fill=tk.Y)
 sb=tk.Scrollbar(window)
 sb.pack(side=tk.LEFT,fill=tk.Y)
 
+#TEST INFO
+SearchResultSorted=[{'Title':"TEST1",'Number':'CHI'},{'Title':"TEST2",'Number':'CHI'},{'Title':"WASD",'Number':'CHI'}]
 
 
-
-lb=tk.Listbox(window,listvariable=SearchResultSorted['Title'],
+lb=tk.Listbox(window,listvariable=SearchResultSorted,
               width=40, relief=tk.GROOVE,yscrollcommand=sb.set)
 lb.pack(side=tk.LEFT,
               expand=tk.YES,
@@ -149,10 +149,13 @@ lb2.pack(side=tk.RIGHT,
 
 
 
+for i in range(len(SearchResultSorted)):
+    lb.insert('end',SearchResultSorted[i]['Title'])
+    
 
-for i in range(1000):
-    lb.insert('end',str(i))
-    #lb2.insert('end',str(i))
+
+
+
 
 sb.config(command=lb.yview)
 sb2.config(command=lb2.yview)
