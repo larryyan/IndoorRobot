@@ -1,24 +1,26 @@
 import tkinter as tk
-#from tkinter import *
-import requests
+# from tkinter import *
 import BookSearch_api
-import webbrowser
+# import webbrowser
 
-#version information
+# version information
 TitleName = 'TestDemo'
 Version = '0.1.2'
-#谢邀，本人代码是逆练出来的，请谅解
+# 谢邀，本人代码是逆练出来的，请谅解
 
-#define Window
+# define Window
 window = tk.Tk()
 window.title(f'{TitleName}  {Version}')
 window.geometry('800x600')
-var=tk.StringVar()
+var = tk.StringVar()
 
 
-#define variables
+# define variables
+'''
 ServerIP = '192.168.100.76'
 Port = 8081
+'''
+
 LinkAddress = None
 KeyWord = None
 SearchMode = None
@@ -27,22 +29,24 @@ SearchResultNo = None
 
 MapLink = None
 CallNo = None
-SearchResultSorted = None
+SearchResultSorted = []
 SelectedBooks = None
 SelectedBooksInfo = []
 
+Position = 0
+
+
 def Debug():
     print('=====================DEBUG INFORMATION=====================')
-    print('SelectedBooks:',SelectedBooks)
-    print('SelectedBooksInfo:',SelectedBooksInfo)
-    print('SearchResultSorted[Postion]:',SearchResultSorted[Postion])
-    print('Postion:',Postion)
-    print('CallNo:',CallNo)
+    print('SelectedBooks:', SelectedBooks)
+    print('SelectedBooksInfo:', SelectedBooksInfo)
+    print('SearchResultSorted[Position]:', SearchResultSorted[Position])
+    print('Position:', Position)
+    print('CallNo:', CallNo)
 
 
-
-
-'''#NOTE PADE
+'''
+# NOTE PADE
 MapLink = f'http://192.168.100.133:8080/cgi-bin/BookLocation.exe?barcode={CallNo}'
 CallNo_Sample：Z0192036
 
@@ -69,120 +73,119 @@ def Search():
 '''
 
 
-
-#This Function is still testing
+# This Function is still testing
 def Search():
-    global SerachMode
+    global SearchMode
     global KeyWord
     global LinkAddress
     global SearchResultSorted
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
     SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
-    print(SearchResultSorted)#Debug
+    print(SearchResultSorted)   # Debug
 
     for i in range(len(SearchResultSorted)):
-        lb.insert('end',SearchResultSorted[i]['Title'])
+        lb.insert('end', SearchResultSorted[i]['Title'])
 
-''' #Anther verstion of text processing   
+
+''' 
+# Another version of text processing   
 for i in SearchResultSorted:
     lb.insert(tk.END,i)
 '''
 
 
-
-
-SearchButton=tk.Button(window,text='Search',
-                       font=('Arial',20),relief=tk.GROOVE,bg='azure',
-                       command=Search)
+SearchButton = tk.Button(window, text='Search',
+                         font=('Arial', 20), relief=tk.GROOVE, bg='azure',
+                         command=Search)
 SearchButton.pack(side=tk.RIGHT,
                   expand=tk.NO,
-                  ipadx=30,ipady=10,
+                  ipadx=30, ipady=10,
                   anchor=tk.NE)
 
 
-InputBox=tk.Entry(window,width=20,font=('Arial',20))
+InputBox = tk.Entry(window, width=20, font=('Arial', 20))
 InputBox.pack(side=tk.TOP,
               expand=tk.NO,
               ipady=20,
               fill=tk.X,
               anchor=tk.N)
 
+
 def BookAdd():
     global SelectedBooks
     global CallNo
     global SelectedBooksInfo
-    global Postion
-    value=lb.get(lb.curselection())
-    lb2.insert('end',str(value))
-    #SelectedBooks=list(set(SelectedBooks))
-    SelectedBooks=lb2.get(0,tk.END)
-    
-    
-    Postion = lb.curselection()
-    Postion = Postion[0]
-    SelectedBooksInfo.append(SearchResultSorted[Postion])
+    global Position
 
-    Debug()#Debug
-    
+    try:
+        value = lb.get(lb.curselection())
+    except Exception:
+        return
 
+    lb2.insert('end', str(value))
+    # SelectedBooks=list(set(SelectedBooks))
+    SelectedBooks = lb2.get(0, tk.END)
+
+    Position = lb.curselection()
+    Position = Position[0]
+    SelectedBooksInfo.append(SearchResultSorted[Position])
+
+    Debug()     # Debug
 
 
 def BookRemove():
+    global Position, SelectedBooks
     Position = lb2.curselection()
     lb2.delete(Position)
-    SelectedBooks=lb2.get(0,tk.END)
+    SelectedBooks = lb2.get(0, tk.END)
     print(SelectedBooks)
 
 
-BookAddButton=tk.Button(window,text='Add Select To BookList',
-                        font=('Arial',20),bg='azure',command=BookAdd)
+BookAddButton = tk.Button(window, text='Add Select To BookList',
+                          font=('Arial', 20), bg='azure', command=BookAdd)
 
 BookAddButton.pack(side=tk.TOP,
                    expand=tk.NO,
-                   ipadx=20,ipady=5,
+                   ipadx=20, ipady=5,
                    anchor=tk.W,)
 
 
-
-BookdeclineButton=tk.Button(window,text='Remove from BookList',
-                            font=('Arial',20),bg='azure',command=BookRemove)
-BookdeclineButton.pack(side=tk.TOP,
-                   expand=tk.YES,
-                   ipadx=20,ipady=5,
-                   anchor=tk.E)
-
+BookDeclineButton = tk.Button(window, text='Remove from BookList',
+                              font=('Arial', 20), bg='azure', command=BookRemove)
+BookDeclineButton.pack(side=tk.TOP,
+                       expand=tk.YES,
+                       ipadx=20, ipady=5,
+                       anchor=tk.E)
 
 
-sb2=tk.Scrollbar(window)
-sb2.pack(side=tk.RIGHT,fill=tk.Y)
-sb=tk.Scrollbar(window)
-sb.pack(side=tk.LEFT,fill=tk.Y)
+sb2 = tk.Scrollbar(window)
+sb2.pack(side=tk.RIGHT, fill=tk.Y)
+sb = tk.Scrollbar(window)
+sb.pack(side=tk.LEFT, fill=tk.Y)
 
-#TEST INFO
-#SearchResultSorted=[{'Title':"TEST1",'Number':'CHI'},{'Title':"TEST2",'Number':'CHI'},{'Title':"WASD",'Number':'CHI'}]
+# TEST INFO
+# SearchResultSorted=[{'Title':"TEST1",'Number':'CHI'},{'Title':"TEST2",'Number':'CHI'},{'Title':"WASD",'Number':'CHI'}]
 
 
-lb=tk.Listbox(window,listvariable=SearchResultSorted,
-              width=40, relief=tk.GROOVE,yscrollcommand=sb.set)
+lb = tk.Listbox(window, listvariable=SearchResultSorted,
+                width=40, relief=tk.GROOVE, yscrollcommand=sb.set)
 lb.pack(side=tk.LEFT,
-              expand=tk.YES,
-              #anchor=tk.NW,
-              fill=tk.Y,
-              ipady=160,
+        expand=tk.YES,
+        # anchor=tk.NW,
+        fill=tk.Y,
+        ipady=160
+        )
 
-              )
 
-
-lb2=tk.Listbox(window,listvariable=SelectedBooks,
-               width=40, relief=tk.GROOVE,yscrollcommand=sb2.set)
+lb2 = tk.Listbox(window, listvariable=SelectedBooks,
+                 width=40, relief=tk.GROOVE, yscrollcommand=sb2.set)
 lb2.pack(side=tk.RIGHT,
-              expand=tk.YES,
-              #anchor=tk.NE,
-              fill=tk.Y,
-              ipady=160,
-
-              )
+         expand=tk.YES,
+         # anchor=tk.NE,
+         fill=tk.Y,
+         ipady=160
+         )
 
 sb.config(command=lb.yview)
 sb2.config(command=lb2.yview)

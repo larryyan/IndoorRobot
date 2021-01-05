@@ -1,12 +1,18 @@
 import json
 import requests
 
+
+'''
+# 实际应用场景
 ServerIP = '192.168.100.76'
 Port = '8081'
+'''
+
 
 # 内部搜索函数，建议不要外部调用
 def SearchBook(SearchMode, KeyWord):
-    LinkAddress = f'http://{ServerIP}:{Port}/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
+    # LinkAddress = f'http://{ServerIP}:{Port}/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
+    LinkAddress = f'https://d1808bfb-7b8e-4f9a-936b-75c19663032f.mock.pstmn.io/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
     SearchResult = requests.get(LinkAddress).json()['result']
     # print(SearchResult)
 
