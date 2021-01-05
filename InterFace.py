@@ -29,6 +29,16 @@ MapLink = None
 CallNo = None
 SearchResultSorted = None
 SelectedBooks = None
+SelectedBooksInfo = []
+
+def Debug():
+    print('=====================DEBUG INFORMATION=====================')
+    print('SelectedBooks:',SelectedBooks)
+    print('SelectedBooksInfo:',SelectedBooksInfo)
+    print('SearchResultSorted[Postion]:',SearchResultSorted[Postion])
+    print('Postion:',Postion)
+    print('CallNo:',CallNo)
+
 
 
 
@@ -65,6 +75,7 @@ def Search():
     global SerachMode
     global KeyWord
     global LinkAddress
+    global SearchResultSorted
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
     SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
@@ -74,8 +85,8 @@ def Search():
         lb.insert('end',SearchResultSorted[i]['Title'])
 
 ''' #Anther verstion of text processing   
-for item in SearchResultSorted:
-    lb.insert(tk.END,item)
+for i in SearchResultSorted:
+    lb.insert(tk.END,i)
 '''
 
 
@@ -100,14 +111,20 @@ InputBox.pack(side=tk.TOP,
 def BookAdd():
     global SelectedBooks
     global CallNo
+    global SelectedBooksInfo
+    global Postion
     value=lb.get(lb.curselection())
     lb2.insert('end',str(value))
     #SelectedBooks=list(set(SelectedBooks))
     SelectedBooks=lb2.get(0,tk.END)
-    print(SelectedBooks)#debug
+    
+    
     Postion = lb.curselection()
-    #CallNo = SearchResultSorted[Postion]
-    #print(CallNo)
+    Postion = Postion[0]
+    SelectedBooksInfo.append(SearchResultSorted[Postion])
+
+    Debug()#Debug
+    
 
 
 
@@ -143,7 +160,7 @@ sb=tk.Scrollbar(window)
 sb.pack(side=tk.LEFT,fill=tk.Y)
 
 #TEST INFO
-SearchResultSorted=[{'Title':"TEST1",'Number':'CHI'},{'Title':"TEST2",'Number':'CHI'},{'Title':"WASD",'Number':'CHI'}]
+#SearchResultSorted=[{'Title':"TEST1",'Number':'CHI'},{'Title':"TEST2",'Number':'CHI'},{'Title':"WASD",'Number':'CHI'}]
 
 
 lb=tk.Listbox(window,listvariable=SearchResultSorted,
