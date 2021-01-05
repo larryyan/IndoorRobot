@@ -32,10 +32,16 @@ SelectedBooks = None
 
 
 
-'''
+'''#NOTE PADE
 MapLink = f'http://192.168.100.133:8080/cgi-bin/BookLocation.exe?barcode={CallNo}'
-
 CallNo_Sample：Z0192036
+
+lb=>RawInfoBox
+lb2=>SelectedBox
+sb=>Scorllbar for lb
+sb2=>Scorllbar for lb2
+
+
 '''
 
 
@@ -62,7 +68,15 @@ def Search():
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
     SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
+    print(SearchResultSorted)#Debug
 
+    for i in range(len(SearchResultSorted)):
+        lb.insert('end',SearchResultSorted[i]['Title'])
+
+''' #Anther verstion of text processing   
+for item in SearchResultSorted:
+    lb.insert(tk.END,item)
+'''
 
 
 
@@ -85,11 +99,16 @@ InputBox.pack(side=tk.TOP,
 
 def BookAdd():
     global SelectedBooks
+    global CallNo
     value=lb.get(lb.curselection())
     lb2.insert('end',str(value))
     #SelectedBooks=list(set(SelectedBooks))
     SelectedBooks=lb2.get(0,tk.END)
-    print(SelectedBooks)
+    print(SelectedBooks)#debug
+    Postion = lb.curselection()
+    #CallNo = SearchResultSorted[Postion]
+    #print(CallNo)
+
 
 
 def BookRemove():
@@ -97,6 +116,7 @@ def BookRemove():
     lb2.delete(Position)
     SelectedBooks=lb2.get(0,tk.END)
     print(SelectedBooks)
+
 
 BookAddButton=tk.Button(window,text='Add Select To BookList',
                         font=('Arial',20),bg='azure',command=BookAdd)
@@ -147,23 +167,8 @@ lb2.pack(side=tk.RIGHT,
 
               )
 
-
-
-for i in range(len(SearchResultSorted)):
-    lb.insert('end',SearchResultSorted[i]['Title'])
-    
-
-
-
-
-
 sb.config(command=lb.yview)
 sb2.config(command=lb2.yview)
-
-
-
-
-
 
 '''
 lb2=tk.Listbox(window,listvariable=SelectedBooks)
