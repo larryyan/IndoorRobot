@@ -14,7 +14,6 @@ def SearchBook(SearchMode, KeyWord):
     except:
         LinkAddress = f'https://d1808bfb-7b8e-4f9a-936b-75c19663032f.mock.pstmn.io/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
     SearchResult = requests.get(LinkAddress).json()['result']
-    # print(SearchResult)
 
     item = SearchResult[0]
     try:
@@ -28,9 +27,11 @@ def SearchBook(SearchMode, KeyWord):
     return BookNumber, BookItems
 
 
-# SearchMode是搜索方式，如：AUTHOR、TITLE
-# KeyWord是搜索关键词，用户输入
-# 返回值：Booklist字典：{'Title':书名, 'Number':索书号}
+'''
+ SearchMode是搜索方式，如：AUTHOR、TITLE
+ KeyWord是搜索关键词，用户输入
+ 返回值：Booklist字典：{'Title':书名, 'Number':索书号}
+'''
 def SearchTitleNumber(SearchMode, KeyWord):
     (SearchBookNumber, SearchBookInfo) = SearchBook(SearchMode, KeyWord)
     BookList = []
