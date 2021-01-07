@@ -2,17 +2,17 @@ import json
 import requests
 
 
-'''
 # 实际应用场景
 ServerIP = '192.168.100.76'
 Port = '8081'
-'''
 
 
 # 内部搜索函数，建议不要外部调用
 def SearchBook(SearchMode, KeyWord):
-    # LinkAddress = f'http://{ServerIP}:{Port}/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
-    LinkAddress = f'https://d1808bfb-7b8e-4f9a-936b-75c19663032f.mock.pstmn.io/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
+    try:
+        LinkAddress = f'http://{ServerIP}:{Port}/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
+    except:
+        LinkAddress = f'https://d1808bfb-7b8e-4f9a-936b-75c19663032f.mock.pstmn.io/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
     SearchResult = requests.get(LinkAddress).json()['result']
     # print(SearchResult)
 
@@ -41,6 +41,6 @@ def SearchTitleNumber(SearchMode, KeyWord):
 
 # 以下内容为内部测试
 if __name__ == '__main__':
-    BookListReturn = SearchTitleNumber('TITLE', '刑法')
+    BookListReturn = SearchTitleNumber('TITLE', '10')
     for item in BookListReturn:
         print(item)
