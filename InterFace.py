@@ -5,7 +5,7 @@ import BookSearch_api
 
 # version information
 TitleName = 'TestDemo'
-Version = '0.1.2'
+Version = '0.1.3'
 # 谢邀，本人代码是逆练出来的，请谅解
 
 # define Window
@@ -36,13 +36,24 @@ SelectedBooksInfo = []
 Position = 0
 
 
-def Debug():
+def Debug(DebugMode):
     print('=====================DEBUG INFORMATION=====================')
-    print('SelectedBooks:', SelectedBooks)
-    print('SelectedBooksInfo:', SelectedBooksInfo)
-    print('SearchResultSorted[Position]:', SearchResultSorted[Position])
-    print('Position:', Position)
-    print('CallNo:', CallNo)
+
+
+    if DebugMode == 'SelectedInfo':
+        print('SearchResultSorted:\n',SearchResultSorted)
+    elif DebugMode == 1:
+        print('SelectedBooks:', SelectedBooks)
+        print('SelectedBooksInfo:', SelectedBooksInfo)
+        print('SearchResultSorted[Position]:', SearchResultSorted[Position])
+        print('Position:', Position)
+        print('CallNo:', CallNo)
+    elif DebugMode == 2:
+        print('SelectedBooks:', SelectedBooks)
+        print('Position:', Position)
+    else:
+        return
+
 
 
 '''
@@ -81,11 +92,15 @@ def Search():
     global SearchResultSorted
     SearchMode = 'TITLE'
     KeyWord = InputBox.get()
-    SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
-    print(SearchResultSorted)   # Debug
-
+    try:
+        SearchResultSorted = BookSearch_api.SearchTitleNumber(SearchMode, KeyWord)
+    except Exception:
+        print('!Exception_Value: SearchResultSorted!')
+        print('ERROR:BookSearch_api.SearchTitleNumber')
+        return
     for i in range(len(SearchResultSorted)):
         lb.insert('end', SearchResultSorted[i]['Title'])
+    Debug('SelectedInfo')
 
 
 ''' 
@@ -119,11 +134,11 @@ def BookAdd():
     global Position
 
     try:
-        value = lb.get(lb.curselection())
+        Position = lb.get(lb.curselection())
     except Exception:
         return
 
-    lb2.insert('end', str(value))
+    lb2.insert('end', str(Position))
     # SelectedBooks=list(set(SelectedBooks))
     SelectedBooks = lb2.get(0, tk.END)
 
@@ -131,15 +146,20 @@ def BookAdd():
     Position = Position[0]
     SelectedBooksInfo.append(SearchResultSorted[Position])
 
-    Debug()     # Debug
+    Debug(1)     # Debug
 
 
 def BookRemove():
-    global Position, SelectedBooks
-    Position = lb2.curselection()
+    global Position
+    global SelectedBooks
+    try:
+        Position = lb2.curselection()
+    except Exception:
+        return
     lb2.delete(Position)
     SelectedBooks = lb2.get(0, tk.END)
-    print(SelectedBooks)
+
+    Debug(2)
 
 
 BookAddButton = tk.Button(window, text='Add Select To BookList',
