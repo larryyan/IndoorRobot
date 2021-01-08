@@ -39,9 +39,8 @@ Position = 0
 def Debug(DebugMode):
     print('=====================DEBUG INFORMATION=====================')
 
-
     if DebugMode == 'SelectedInfo':
-        print('SearchResultSorted:\n',SearchResultSorted)
+        print('SearchResultSorted:\n', SearchResultSorted)
     elif DebugMode == 1:
         print('SelectedBooks:', SelectedBooks)
         print('SelectedBooksInfo:', SelectedBooksInfo)
@@ -71,7 +70,7 @@ sb2=>Scorllbar for lb2
 
 
 '''
-#the older version of the independent Search function
+#the older version of the independent Search function 那还留着过年吗？！
 def Search():
     global SearchMode
     global KeyWord
@@ -101,30 +100,6 @@ def Search():
     for i in range(len(SearchResultSorted)):
         lb.insert('end', SearchResultSorted[i]['Title'])
     Debug('SelectedInfo')
-
-
-''' 
-# Another version of text processing   
-for i in SearchResultSorted:
-    lb.insert(tk.END,i)
-'''
-
-
-SearchButton = tk.Button(window, text='Search',
-                         font=('Arial', 20), relief=tk.GROOVE, bg='azure',
-                         command=Search)
-SearchButton.pack(side=tk.RIGHT,
-                  expand=tk.NO,
-                  ipadx=30, ipady=10,
-                  anchor=tk.NE)
-
-
-InputBox = tk.Entry(window, width=20, font=('Arial', 20))
-InputBox.pack(side=tk.TOP,
-              expand=tk.NO,
-              ipady=20,
-              fill=tk.X,
-              anchor=tk.N)
 
 
 def BookAdd():
@@ -162,76 +137,89 @@ def BookRemove():
     Debug(2)
 
 
-BookAddButton = tk.Button(window, text='Add Select To BookList',
-                          font=('Arial', 20), bg='azure', command=BookAdd)
-
-BookAddButton.pack(side=tk.TOP,
-                   expand=tk.NO,
-                   ipadx=20, ipady=5,
-                   anchor=tk.W,)
+''' 
+# Another version of text processing   
+for i in SearchResultSorted:
+    lb.insert(tk.END,i)
+'''
 
 
-BookDeclineButton = tk.Button(window, text='Remove from BookList',
-                              font=('Arial', 20), bg='azure', command=BookRemove)
-BookDeclineButton.pack(side=tk.TOP,
-                       expand=tk.YES,
+# 主程序 main function
+if __name__ == '__main__':
+
+    SearchFrame = tk.Frame(window)
+    ButtonFrame = tk.Frame(window)
+    ListFrame = tk.Frame(window)
+    SearchFrame.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
+    ButtonFrame.pack(expand=True, fill=tk.BOTH)
+    ListFrame.pack(side=tk.BOTTOM, expand=True, fill=tk.BOTH)
+
+    SearchButton = tk.Button(window, text='Search',
+                             font=('Arial', 20), relief=tk.GROOVE, bg='azure',
+                             command=Search)
+    SearchButton.pack(in_=SearchFrame,
+                      side=tk.RIGHT,
+                      expand=tk.NO,
+                      ipadx=30, ipady=10,
+                      anchor=tk.NE)
+
+    InputBox = tk.Entry(window, width=20, font=('Arial', 20))
+    InputBox.pack(in_=SearchFrame,
+                  side=tk.TOP,
+                  expand=tk.NO,
+                  ipady=20,
+                  fill=tk.X,
+                  anchor=tk.N)
+
+    BookAddButton = tk.Button(window, text='Add Select To BookList',
+                              font=('Arial', 20), bg='azure', command=BookAdd)
+
+    BookAddButton.pack(in_=ButtonFrame,
+                       side=tk.LEFT,
+                       expand=tk.YES, fill=tk.Y,
                        ipadx=20, ipady=5,
-                       anchor=tk.E)
+                       # anchor=tk.W
+                       )
 
+    BookDeclineButton = tk.Button(window, text='Remove from BookList',
+                                  font=('Arial', 20), bg='azure', command=BookRemove)
 
-sb2 = tk.Scrollbar(window)
-sb2.pack(side=tk.RIGHT, fill=tk.Y)
-sb = tk.Scrollbar(window)
-sb.pack(side=tk.LEFT, fill=tk.Y)
+    BookDeclineButton.pack(in_=ButtonFrame,
+                           side=tk.RIGHT,
+                           expand=tk.YES, fill=tk.Y,
+                           ipadx=20, ipady=5,
+                           # anchor=tk.E
+                           )
 
-# TEST INFO
-# SearchResultSorted=[{'Title':"TEST1",'Number':'CHI'},{'Title':"TEST2",'Number':'CHI'},{'Title':"WASD",'Number':'CHI'}]
+    sb2 = tk.Scrollbar(window)
+    sb2.pack(in_=ListFrame, side=tk.RIGHT, fill=tk.Y)
+    sb = tk.Scrollbar(window)
+    sb.pack(in_=ListFrame, side=tk.LEFT, fill=tk.Y)
 
+    # TEST INFO
+    # SearchResultSorted=[{'Title':"TEST1",'Number':'CHI'},{'Title':"TEST2",'Number':'CHI'},{'Title':"WASD",'Number':'CHI'}]
 
-lb = tk.Listbox(window, listvariable=SearchResultSorted,
-                width=40, relief=tk.GROOVE, yscrollcommand=sb.set)
-lb.pack(side=tk.LEFT,
-        expand=tk.YES,
-        # anchor=tk.NW,
-        fill=tk.Y,
-        ipady=160
-        )
+    lb = tk.Listbox(window, listvariable=SearchResultSorted,
+                    width=40, relief=tk.GROOVE, yscrollcommand=sb.set)
+    lb.pack(in_=ListFrame,
+            side=tk.LEFT,
+            expand=tk.YES,
+            # anchor=tk.NW,
+            fill=tk.Y,
+            ipady=160
+            )
 
+    lb2 = tk.Listbox(window, listvariable=SelectedBooks,
+                     width=40, relief=tk.GROOVE, yscrollcommand=sb2.set)
+    lb2.pack(in_=ListFrame,
+             side=tk.RIGHT,
+             expand=tk.YES,
+             # anchor=tk.NE,
+             fill=tk.Y,
+             ipady=160
+             )
 
-lb2 = tk.Listbox(window, listvariable=SelectedBooks,
-                 width=40, relief=tk.GROOVE, yscrollcommand=sb2.set)
-lb2.pack(side=tk.RIGHT,
-         expand=tk.YES,
-         # anchor=tk.NE,
-         fill=tk.Y,
-         ipady=160
-         )
+    sb.config(command=lb.yview)
+    sb2.config(command=lb2.yview)
 
-sb.config(command=lb.yview)
-sb2.config(command=lb2.yview)
-
-'''
-lb2=tk.Listbox(window,listvariable=SelectedBooks)
-lb2.pack(side=tk.RIGHT,
-              #anchor=tk.NE,
-              expand=tk.YES,
-              fill=tk.Y,
-              ipadx=60)
-
-
-lb=tk.Listbox(window,listvariable=SearchResultSorted)
-lb.pack(side=tk.LEFT,
-              #anchor=tk.NW,
-              expand=tk.YES,
-              fill=tk.Y,
-              ipadx=90)
-
-
-l=tk.Label(window,textvariable=var,
-           bg='azure',font=('Arial',12),
-           width=20,height=2)
-l.pack(side=tk.LEFT,expand=tk.NO)
-
-'''
-
-window.mainloop()
+    window.mainloop()
