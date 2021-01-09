@@ -1,7 +1,12 @@
 import tkinter as tk
+import tkinter.messagebox
 # from tkinter import *
+import time
 import BookSearch_api
 # import webbrowser
+
+
+
 
 # version information
 TitleName = 'TestDemo'
@@ -34,7 +39,9 @@ SelectedBooks = None
 SelectedBooksInfo = []
 
 Position = 0
-
+Message = None
+ERROR = 'ERROR'
+PASS = 'PASS'
 
 def Debug(DebugMode):
     print('=====================DEBUG INFORMATION=====================')
@@ -69,21 +76,8 @@ sb2=>Scorllbar for lb2
 '''
 
 
-'''
-#the older version of the independent Search function 那还留着过年吗？！
-def Search():
-    global SearchMode
-    global KeyWord
-    global LinkAddress
-    SearchMode = 'TITLE'
-    KeyWord = InputBox.get()
-    LinkAddress = f'http://{ServerIP}:{Port}/datasnap/rest/TInterFace/searchbook/{SearchMode}/{KeyWord}'
-    SearchResult = requests.get(LinkAddress).json()
-    print(SearchResult)
-'''
 
 
-# This Function is still testing
 def Search():
     global SearchMode
     global KeyWord
@@ -96,6 +90,7 @@ def Search():
     except Exception:
         print('!Exception_Value: SearchResultSorted!')
         print('ERROR:BookSearch_api.SearchTitleNumber')
+        notification(ERROR,'未能找到您查找的数据')
         return
     for i in range(len(SearchResultSorted)):
         lb.insert('end', SearchResultSorted[i]['Title'])
@@ -135,6 +130,18 @@ def BookRemove():
     SelectedBooks = lb2.get(0, tk.END)
 
     Debug(2)
+
+
+# This Function is still testing
+def notification(Status,Message):
+    if Status == ERROR:
+        result = tkinter.messagebox.showwarning(title = 'ERROR',message=Message)
+    elif Status == PASS:
+        result = tkinter.messagebox.showinfo(title = 'Message',message=Message)
+    else:
+        result = tkinter.messagebox.askokcancel(title = 'ERROR',message=(Message,'谁整的垃圾玩意出BUG了'))
+
+
 
 
 ''' 
