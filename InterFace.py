@@ -1,7 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox
 # from tkinter import *
-import time
+# import time
 import BookSearch_api
 # import webbrowser
 
@@ -39,26 +39,30 @@ SelectedBooks = None
 SelectedBooksInfo = []
 
 Position = 0
-Message = None
+# Message = None        貌似与函数参数重复，所以我给注释了
 ERROR = 'ERROR'
 PASS = 'PASS'
+
 
 def Debug(DebugMode):
     print('=====================DEBUG INFORMATION=====================')
 
     if DebugMode == 'SelectedInfo':
         print('SearchResultSorted:\n', SearchResultSorted)
-    elif DebugMode == 1:
+        return
+    if DebugMode == 1:
         print('SelectedBooks:', SelectedBooks)
         print('SelectedBooksInfo:', SelectedBooksInfo)
         print('SearchResultSorted[Position]:', SearchResultSorted[Position])
         print('Position:', Position)
         print('CallNo:', CallNo)
-    elif DebugMode == 2:
+        return
+    if DebugMode == 2:
         print('SelectedBooks:', SelectedBooks)
         print('Position:', Position)
-    else:
         return
+
+    return
 
 
 
@@ -69,8 +73,8 @@ CallNo_Sample：Z0192036
 
 lb=>RawInfoBox
 lb2=>SelectedBox
-sb=>Scorllbar for lb
-sb2=>Scorllbar for lb2
+sb=>Scrollbar for lb
+sb2=>Scrollbar for lb2
 
 
 '''
@@ -90,7 +94,7 @@ def Search():
     except Exception:
         print('!Exception_Value: SearchResultSorted!')
         print('ERROR:BookSearch_api.SearchTitleNumber')
-        notification(ERROR,'未能找到您查找的数据')
+        notification(ERROR, '未能找到您查找的数据')
         return
     for i in range(len(SearchResultSorted)):
         lb.insert('end', SearchResultSorted[i]['Title'])
@@ -133,15 +137,16 @@ def BookRemove():
 
 
 # This Function is still testing
-def notification(Status,Message):
+def notification(Status, Message):
     if Status == ERROR:
-        result = tkinter.messagebox.showwarning(title = 'ERROR',message=Message)
-    elif Status == PASS:
-        result = tkinter.messagebox.showinfo(title = 'Message',message=Message)
+        tkinter.messagebox.showwarning(title='ERROR', message=Message)
+        return
+    if Status == PASS:
+        tkinter.messagebox.showinfo(title='Message', message=Message)
+        return
     else:
-        result = tkinter.messagebox.askokcancel(title = 'ERROR',message=(Message,'谁整的垃圾玩意出BUG了'))
-
-
+        tkinter.messagebox.askokcancel(title='ERROR', message=(Message, '谁整的垃圾玩意出BUG了'))
+    return
 
 
 ''' 
