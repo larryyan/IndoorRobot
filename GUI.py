@@ -2,6 +2,7 @@ import tkinter as tk
 
 from Beta.data import *
 from Beta.Service import *
+from Beta.config import *
 
 if __name__ == '__main__':
 

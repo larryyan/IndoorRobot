@@ -3,7 +3,7 @@ import tkinter.messagebox
 import json
 import requests
 from Beta.data import *
-
+from Beta.config import *
 '''
 import sys
 sys.path.append('../')
@@ -30,20 +30,6 @@ def Debug(DebugMode):
 
     return
 
-
-
-'''
-# NOTE PADE
-MapLink = f'http://192.168.100.133:8080/cgi-bin/BookLocation.exe?barcode={CallNo}'
-CallNo_Sample：Z0192036
-
-lb=>RawInfoBox
-lb2=>SelectedBox
-sb=>Scrollbar for lb
-sb2=>Scrollbar for lb2
-
-
-'''
 
 def SearchBook(SearchMode, KeyWord):
     SearchResult = []
@@ -90,7 +76,6 @@ def Search():
     for i in range(len(SearchResultSorted)):
         lb.insert('end', SearchResultSorted[i]['Title'])
     Debug('SelectedInfo')
-
 
 def BookAdd():
     global SelectedBooks
@@ -140,26 +125,7 @@ def notification(Status, Message):
 
 
 
-
-
-#Under this is GUI service
-
-
-# version information
-TitleName = 'TestDemo'
-Version = '0.1.4'
-# 谢邀，本人代码是逆练出来的，请谅解
-
-# define Window
-window = tk.Tk()
-window.title(f'{TitleName}  {Version}')
-window.geometry('800x600')
-
-
-SearchFrame = tk.Frame(window)
-ButtonFrame = tk.Frame(window)
-ListFrame = tk.Frame(window)
-
+#Under this are GUI services
 InputBox = tk.Entry(window, width=20, font=('Arial', 20))
 
 SearchButton = tk.Button(window, text='Search',
@@ -182,3 +148,16 @@ lb = tk.Listbox(window, listvariable=SearchResultSorted,
 
 lb2 = tk.Listbox(window, listvariable=SelectedBooks,
                  width=40, relief=tk.GROOVE, yscrollcommand=sb2.set)
+
+'''
+# NOTE PADE
+MapLink = f'http://192.168.100.133:8080/cgi-bin/BookLocation.exe?barcode={CallNo}'
+CallNo_Sample：Z0192036
+
+lb=>RawInfoBox
+lb2=>SelectedBox
+sb=>Scrollbar for lb
+sb2=>Scrollbar for lb2
+
+
+'''
