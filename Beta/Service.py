@@ -73,6 +73,7 @@ def Search():
         print('ERROR:BookSearch_api.SearchTitleNumber')
         notification(ERROR, '未能找到您查找的数据')
         return
+    lb.delete(0,tk.END)#remove all items in lb
     for i in range(len(SearchResultSorted)):
         lb.insert('end', SearchResultSorted[i]['Title'])
     Debug('SelectedInfo')
