@@ -14,5 +14,5 @@ while 1:
     try:
         Select = int(input())
     except Exception:
-        sys.exit(1)
+        sys.exit(0)
         
