@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="mbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- PROPERTY LIST -->
+    <xacro:property name="M_PI" value="3.1415926"/>
+    <!--圆柱体的定义需要长度length及半径radius-->
+    <xacro:property name="base_radius" value="0.20"/>
+    <xacro:property name="base_length" value="0.16"/>
+    <!--轮子也是一种圆柱体，同时要通过关节与主体连接 -->
+    <xacro:property name="wheel_radius" value="0.06"/>
+    <xacro:property name="wheel_length" value="0.025"/>
+    <!--关节的位置属性定义，由于关节需要将主体与轮子无缝连接，因此在x或者y方向上，一般定义为主体半径大小 -->
+    <xacro:property name="wheel_joint_y" value="0.19"/>
+    <xacro:property name="wheel_joint_z" value="0.05"/>
+    <!-- -->
+    <xacro:property name="caster_radius" value="0.015"/> 
+
+    <!-- wheel_radius - ( base_length/2 - wheel_joint_z) -->
+    <xacro:property name="caster_joint_x" value="0.18"/>
+
+<!-- Defining the colors used in this robot -->
+    <material name="yellow">
+        <color rgba="1 0.4 0 1"/>
+    </material>
+    <material name="black">
+        <color rgba="0 0 0 0.95"/>
+    </material>
+    <material name="gray">
+        <color rgba="0.75 0.75 0.75 1"/>
+    </material>
+
+<xacro:macro name="wheel" params="prefix reflect">
+<joint name="${prefix}_wheel_joint " type="continuous"> <!--continuous 表示是可以360度旋转的joint-->
+    <origin xyz="0 ${reflect*wheel_joint_y} ${-wheel_joint_z}" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="${prefix}_wheel_link"/>
+    <axis xyz="0 1 0"/>
+</joint>
+<link name="${prefix}_wheel_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length = "${wheel_length}"/>
+                </geometry>
+                <material name="gray" />
+            </visual>
+</link>
+</xacro:macro>
+
+ <!-- Macro for robot caster -->
+    <xacro:macro name="caster" params="prefix reflect">
+        <joint name="${prefix}_caster_joint" type="continuous">
+        <!---(base_length/2 + caster_radius)表示一半在外面，一半在里面-->
+            <origin xyz="${reflect*caster_joint_x} 0 ${-(base_length/2 + caster_radius)}" rpy="0 0 0"/>
+            <parent link="base_link"/>
+            <child link="${prefix}_caster_link"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+
+        <link name="${prefix}_caster_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <sphere radius="${caster_radius}" />
+                </geometry>
+                <material name="black" />
+            </visual>
+        </link>
+    </xacro:macro>
+
+   <xacro:macro name="mbot_base">
+   
+        <link name="base_link">
+            <visual>
+                <origin xyz=" 0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="${base_length}" radius="${base_radius}"/>
+                </geometry>
+                <material name="yellow" />
+            </visual>
+        </link>
+
+        <wheel prefix="left" reflect="-1"/>
+        <wheel prefix="right" reflect="1"/>
+
+        <caster prefix="front" reflect="-1"/>
+        <caster prefix="back" reflect="1"/>
+    </xacro:macro>
+</robot>

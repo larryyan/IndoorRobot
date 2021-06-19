@@ -1,0 +1,40 @@
+<launch>
+  <!--
+    $ sudo apt install ros-melodic-turtlebot3* ros-melodic-dwa-local-planner
+    To avoid TF warning about leading '/' in frame name, remove it in:
+       - "/opt/ros/melodic/share/turtlebot3_navigation/param/global_costmap_params.yaml"
+       - "/opt/ros/melodic/share/turtlebot3_navigation/param/local_costmap_params.yaml"
+
+    Example Gazebo:
+    $ export TURTLEBOT3_MODEL=waffle
+    $ roslaunch turtlebot3_gazebo turtlebot3_world.launch
+
+    $ export TURTLEBOT3_MODEL=waffle
+    $ roslaunch rtabmap_ros demo_turtlebot3_navigation.launch
+  -->
+
+  <!-- Arguments -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="rtabmapviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+
+  <arg name="with_camera" default="true"/>
+  <arg name="localization" default="false"/>
+  <arg name="database_path" default="~/.ros/rtabmap.db"/>
+  <arg     if="$(arg localization)" name="rtabmap_args" default=""/>
+  <arg unless="$(arg localization)" name="rtabmap_args" default="-d"/>
+
+  <!-- Turtlebot3 -->
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)" />
+  </include>
+
+  <group ns="rtabmap">
+    <node if="$(eval model=='waffle')" pkg="rtabmap_ros" type="rgbd_sync" name="rgbd_sync" output="screen">
+      <remap from="rgb/image"         to="/camera/rgb/image_raw"/>
+      <remap from="depth/image"       to="/camera/depth/image_raw"/>
+      <remap from="rgb/camera_info"   to="/camera/rgb/camera_info"/>
+    </node>
+  </group>
+</launch>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap">
+   <param name="Optimizer/Iterations" type="int" value="50"/>
+</node>
+</launch>
+
+

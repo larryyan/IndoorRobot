@@ -6,7 +6,7 @@
 ### 地图部分
  - 提前将室内地图导入程序
  - 地图存储为5-10厘米一格
-
+! Make sure the input topics are published ("$ rostopic hz my_topic") and the timestamps in their header are set.  /rtabmap/rgbd_sync subscribed to (approx sync):    /camera/rgb/image_raw \    /camera/depth/image_raw \
 ### 获取书本位置
  - 调用api接口
  - 获取书架号
